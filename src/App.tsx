@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import PublicForm from "./pages/PublicForm";
+import SignLetter from "./pages/SignLetter";
+import VerifyLetter from "./pages/VerifyLetter";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/form/:slug" element={<PublicForm />} />
+          <Route path="/sign/:letterId?" element={<SignLetter />} />
+          <Route path="/verify/:letterId" element={<VerifyLetter />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
