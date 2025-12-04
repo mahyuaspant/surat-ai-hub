@@ -14,16 +14,394 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      digital_signatures: {
+        Row: {
+          created_at: string | null
+          id: string
+          ip_address: string | null
+          letter_id: string
+          signature_hash: string
+          signature_image_url: string
+          signed_at: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          letter_id: string
+          signature_hash: string
+          signature_image_url: string
+          signed_at?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          letter_id?: string
+          signature_hash?: string
+          signature_image_url?: string
+          signed_at?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_signatures_letter_id_fkey"
+            columns: ["letter_id"]
+            isOneToOne: false
+            referencedRelation: "outgoing_letters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dispositions: {
+        Row: {
+          created_at: string | null
+          deadline: string | null
+          from_user_id: string
+          id: string
+          instructions: string
+          letter_id: string
+          response: string | null
+          status: string | null
+          to_user_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          deadline?: string | null
+          from_user_id: string
+          id?: string
+          instructions: string
+          letter_id: string
+          response?: string | null
+          status?: string | null
+          to_user_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          deadline?: string | null
+          from_user_id?: string
+          id?: string
+          instructions?: string
+          letter_id?: string
+          response?: string | null
+          status?: string | null
+          to_user_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispositions_letter_id_fkey"
+            columns: ["letter_id"]
+            isOneToOne: false
+            referencedRelation: "incoming_letters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incoming_letters: {
+        Row: {
+          ai_summary: string | null
+          content: string | null
+          created_at: string | null
+          file_url: string | null
+          id: string
+          institution_id: string
+          sender_email: string
+          sender_name: string
+          sender_phone: string | null
+          status: Database["public"]["Enums"]["letter_status"] | null
+          subject: string
+          ticket_number: string
+          updated_at: string | null
+        }
+        Insert: {
+          ai_summary?: string | null
+          content?: string | null
+          created_at?: string | null
+          file_url?: string | null
+          id?: string
+          institution_id: string
+          sender_email: string
+          sender_name: string
+          sender_phone?: string | null
+          status?: Database["public"]["Enums"]["letter_status"] | null
+          subject: string
+          ticket_number: string
+          updated_at?: string | null
+        }
+        Update: {
+          ai_summary?: string | null
+          content?: string | null
+          created_at?: string | null
+          file_url?: string | null
+          id?: string
+          institution_id?: string
+          sender_email?: string
+          sender_name?: string
+          sender_phone?: string | null
+          status?: Database["public"]["Enums"]["letter_status"] | null
+          subject?: string
+          ticket_number?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incoming_letters_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutions: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          description: string | null
+          email: string | null
+          id: string
+          is_active: boolean | null
+          logo_url: string | null
+          name: string
+          phone: string | null
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          description?: string | null
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          logo_url?: string | null
+          name: string
+          phone?: string | null
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          description?: string | null
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      letter_verifications: {
+        Row: {
+          id: string
+          ip_address: string | null
+          is_valid: boolean | null
+          letter_id: string
+          verification_hash: string
+          verified_at: string | null
+        }
+        Insert: {
+          id?: string
+          ip_address?: string | null
+          is_valid?: boolean | null
+          letter_id: string
+          verification_hash: string
+          verified_at?: string | null
+        }
+        Update: {
+          id?: string
+          ip_address?: string | null
+          is_valid?: boolean | null
+          letter_id?: string
+          verification_hash?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "letter_verifications_letter_id_fkey"
+            columns: ["letter_id"]
+            isOneToOne: false
+            referencedRelation: "outgoing_letters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      outgoing_letters: {
+        Row: {
+          content: string
+          created_at: string | null
+          created_by: string | null
+          document_hash: string | null
+          file_url: string | null
+          final_pdf_url: string | null
+          id: string
+          institution_id: string
+          is_signed: boolean | null
+          letter_number: string
+          qr_code_url: string | null
+          recipient: string
+          status: Database["public"]["Enums"]["letter_status"] | null
+          subject: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          created_by?: string | null
+          document_hash?: string | null
+          file_url?: string | null
+          final_pdf_url?: string | null
+          id?: string
+          institution_id: string
+          is_signed?: boolean | null
+          letter_number: string
+          qr_code_url?: string | null
+          recipient: string
+          status?: Database["public"]["Enums"]["letter_status"] | null
+          subject: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          created_by?: string | null
+          document_hash?: string | null
+          file_url?: string | null
+          final_pdf_url?: string | null
+          id?: string
+          institution_id?: string
+          is_signed?: boolean | null
+          letter_number?: string
+          qr_code_url?: string | null
+          recipient?: string
+          status?: Database["public"]["Enums"]["letter_status"] | null
+          subject?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outgoing_letters_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          institution_id: string | null
+          phone: string | null
+          signature_url: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          institution_id?: string | null
+          phone?: string | null
+          signature_url?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          institution_id?: string | null
+          phone?: string | null
+          signature_url?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          institution_id: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_institution: { Args: { _user_id: string }; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "superadmin" | "admin_instansi" | "user_instansi" | "visitor"
+      letter_status:
+        | "received"
+        | "review"
+        | "disposition"
+        | "in_progress"
+        | "completed"
+        | "archived"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +528,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["superadmin", "admin_instansi", "user_instansi", "visitor"],
+      letter_status: [
+        "received",
+        "review",
+        "disposition",
+        "in_progress",
+        "completed",
+        "archived",
+      ],
+    },
   },
 } as const
