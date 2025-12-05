@@ -9,6 +9,10 @@ import Dashboard from "./pages/Dashboard";
 import PublicForm from "./pages/PublicForm";
 import SignLetter from "./pages/SignLetter";
 import VerifyLetter from "./pages/VerifyLetter";
+import IncomingLetters from "./pages/IncomingLetters";
+import OutgoingLetters from "./pages/OutgoingLetters";
+import NewOutgoingLetter from "./pages/NewOutgoingLetter";
+import Dispositions from "./pages/Dispositions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +27,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/incoming" element={<IncomingLetters />} />
+          <Route path="/dashboard/outgoing" element={<OutgoingLetters />} />
+          <Route path="/dashboard/outgoing/new" element={<NewOutgoingLetter />} />
+          <Route path="/dashboard/disposition" element={<Dispositions />} />
           <Route path="/form/:slug" element={<PublicForm />} />
           <Route path="/sign/:letterId?" element={<SignLetter />} />
           <Route path="/verify/:letterId" element={<VerifyLetter />} />
