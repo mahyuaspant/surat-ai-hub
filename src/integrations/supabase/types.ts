@@ -240,6 +240,7 @@ export type Database = {
       }
       outgoing_letters: {
         Row: {
+          approved_by: string | null
           content: string
           created_at: string | null
           created_by: string | null
@@ -257,6 +258,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          approved_by?: string | null
           content: string
           created_at?: string | null
           created_by?: string | null
@@ -274,6 +276,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          approved_by?: string | null
           content?: string
           created_at?: string | null
           created_by?: string | null
@@ -309,6 +312,7 @@ export type Database = {
           id: string
           institution_id: string | null
           phone: string | null
+          position: string | null
           signature_url: string | null
           updated_at: string | null
           user_id: string
@@ -321,6 +325,7 @@ export type Database = {
           id?: string
           institution_id?: string | null
           phone?: string | null
+          position?: string | null
           signature_url?: string | null
           updated_at?: string | null
           user_id: string
@@ -333,6 +338,7 @@ export type Database = {
           id?: string
           institution_id?: string | null
           phone?: string | null
+          position?: string | null
           signature_url?: string | null
           updated_at?: string | null
           user_id?: string

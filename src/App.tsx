@@ -13,6 +13,8 @@ import IncomingLetters from "./pages/IncomingLetters";
 import OutgoingLetters from "./pages/OutgoingLetters";
 import NewOutgoingLetter from "./pages/NewOutgoingLetter";
 import Dispositions from "./pages/Dispositions";
+import UserManagement from "./pages/UserManagement";
+import LetterDetail from "./pages/LetterDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,7 +32,9 @@ const App = () => (
           <Route path="/dashboard/incoming" element={<IncomingLetters />} />
           <Route path="/dashboard/outgoing" element={<OutgoingLetters />} />
           <Route path="/dashboard/outgoing/new" element={<NewOutgoingLetter />} />
+          <Route path="/dashboard/letter/:letterId" element={<LetterDetail />} />
           <Route path="/dashboard/disposition" element={<Dispositions />} />
+          <Route path="/dashboard/users" element={<UserManagement />} />
           <Route path="/form/:slug" element={<PublicForm />} />
           <Route path="/sign/:letterId?" element={<SignLetter />} />
           <Route path="/verify/:letterId" element={<VerifyLetter />} />

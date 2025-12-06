@@ -32,6 +32,7 @@ const mainMenuItems = [
   { title: "Surat Masuk", url: "/dashboard/incoming", icon: Mail },
   { title: "Surat Keluar", url: "/dashboard/outgoing", icon: Send },
   { title: "Disposisi", url: "/dashboard/disposition", icon: Users },
+  { title: "Manajemen User", url: "/dashboard/users", icon: Users },
 ];
 
 const toolsMenuItems = [
