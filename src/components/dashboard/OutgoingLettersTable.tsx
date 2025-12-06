@@ -85,6 +85,10 @@ export function OutgoingLettersTable() {
     navigate(`/sign/${letterId}`);
   };
 
+  const handleViewDetail = (letterId: string) => {
+    navigate(`/dashboard/letter/${letterId}`);
+  };
+
   if (loading) {
     return (
       <div className="bg-card rounded-xl border border-border p-8 flex items-center justify-center">
@@ -198,7 +202,7 @@ export function OutgoingLettersTable() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="gap-2">
+                        <DropdownMenuItem className="gap-2" onClick={() => handleViewDetail(letter.id)}>
                           <Eye className="w-4 h-4" />
                           Lihat Detail
                         </DropdownMenuItem>
