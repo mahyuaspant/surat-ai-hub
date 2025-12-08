@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -9,8 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useUserInstitution } from "@/hooks/useUserInstitution";
-import { ArrowLeft, Send } from "lucide-react";
-import { useEffect } from "react";
+import { ArrowLeft, Send, Upload, X, FileText } from "lucide-react";
 import { User } from "@supabase/supabase-js";
 
 const NewOutgoingLetter = () => {
@@ -19,6 +18,9 @@ const NewOutgoingLetter = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
     letter_number: "",
@@ -41,6 +43,50 @@ const NewOutgoingLetter = () => {
     return `SK-${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${num}`;
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      // Check file size (max 10MB)
+      if (selectedFile.size > 10 * 1024 * 1024) {
+        toast.error("Ukuran file maksimal 10MB");
+        return;
+      }
+      // Check file type
+      const allowedTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        toast.error("Format file harus PDF atau DOC/DOCX");
+        return;
+      }
+      setFile(selectedFile);
+    }
+  };
+
+  const uploadFile = async (): Promise<string | null> => {
+    if (!file || !user) return null;
+    
+    setUploading(true);
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${institutionId}/${Date.now()}.${fileExt}`;
+    
+    const { error } = await supabase.storage
+      .from("letters")
+      .upload(fileName, file);
+    
+    setUploading(false);
+    
+    if (error) {
+      console.error("Upload error:", error);
+      toast.error("Gagal upload file");
+      return null;
+    }
+    
+    const { data: urlData } = supabase.storage
+      .from("letters")
+      .getPublicUrl(fileName);
+    
+    return urlData.publicUrl;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -50,6 +96,11 @@ const NewOutgoingLetter = () => {
     }
 
     setSubmitting(true);
+    
+    let fileUrl = null;
+    if (file) {
+      fileUrl = await uploadFile();
+    }
     
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -61,6 +112,7 @@ const NewOutgoingLetter = () => {
       institution_id: institutionId,
       created_by: user?.id,
       status: "review",
+      file_url: fileUrl,
     });
 
     if (error) {
@@ -141,13 +193,58 @@ const NewOutgoingLetter = () => {
                   />
                 </div>
 
+                {/* File Upload Section */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Lampiran (Opsional)</label>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  
+                  {!file ? (
+                    <div
+                      onClick={() => fileInputRef.current?.click()}
+                      className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/30 transition-colors"
+                    >
+                      <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-sm text-muted-foreground">
+                        Klik untuk upload file PDF atau DOC
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Maksimal 10MB
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg border border-border">
+                      <FileText className="w-8 h-8 text-primary" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {(file.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setFile(null)}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex items-center gap-4 pt-4">
                   <Button type="button" variant="outline" onClick={() => navigate("/dashboard/outgoing")}>
                     Batal
                   </Button>
-                  <Button type="submit" disabled={submitting} className="gap-2">
+                  <Button type="submit" disabled={submitting || uploading} className="gap-2">
                     <Send className="w-4 h-4" />
-                    {submitting ? "Menyimpan..." : "Simpan Surat"}
+                    {submitting || uploading ? "Menyimpan..." : "Simpan Surat"}
                   </Button>
                 </div>
               </form>
