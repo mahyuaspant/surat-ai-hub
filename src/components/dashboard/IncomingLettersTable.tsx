@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   Table, 
   TableBody, 
@@ -60,6 +61,7 @@ const statusConfig: Record<LetterStatus, { label: string; class: string }> = {
 };
 
 export function IncomingLettersTable() {
+  const navigate = useNavigate();
   const [letters, setLetters] = useState<IncomingLetter[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -232,7 +234,10 @@ export function IncomingLettersTable() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="gap-2">
+                          <DropdownMenuItem 
+                            className="gap-2" 
+                            onClick={() => navigate(`/dashboard/incoming/${letter.id}`)}
+                          >
                             <Eye className="w-4 h-4" />
                             Lihat Detail
                           </DropdownMenuItem>
