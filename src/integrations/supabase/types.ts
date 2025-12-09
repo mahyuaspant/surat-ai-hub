@@ -203,6 +203,50 @@ export type Database = {
         }
         Relationships: []
       }
+      letter_templates: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          institution_id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          content: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          institution_id: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          institution_id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "letter_templates_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       letter_verifications: {
         Row: {
           id: string
@@ -234,6 +278,50 @@ export type Database = {
             columns: ["letter_id"]
             isOneToOne: false
             referencedRelation: "outgoing_letters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      letterhead_settings: {
+        Row: {
+          address: string | null
+          contact: string | null
+          created_at: string
+          custom_header: string | null
+          id: string
+          institution_id: string
+          institution_name: string
+          logo_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          contact?: string | null
+          created_at?: string
+          custom_header?: string | null
+          id?: string
+          institution_id: string
+          institution_name: string
+          logo_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          contact?: string | null
+          created_at?: string
+          custom_header?: string | null
+          id?: string
+          institution_id?: string
+          institution_name?: string
+          logo_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "letterhead_settings_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: true
+            referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
         ]

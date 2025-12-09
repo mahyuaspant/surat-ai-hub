@@ -16,6 +16,7 @@ import Dispositions from "./pages/Dispositions";
 import UserManagement from "./pages/UserManagement";
 import LetterDetail from "./pages/LetterDetail";
 import IncomingLetterDetail from "./pages/IncomingLetterDetail";
+import LetterTemplates from "./pages/LetterTemplates";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/dashboard/letter/:letterId" element={<LetterDetail />} />
           <Route path="/dashboard/disposition" element={<Dispositions />} />
           <Route path="/dashboard/users" element={<UserManagement />} />
+          <Route path="/dashboard/templates" element={<LetterTemplates />} />
           <Route path="/form/:slug" element={<PublicForm />} />
           <Route path="/sign/:letterId?" element={<SignLetter />} />
           <Route path="/verify/:letterId" element={<VerifyLetter />} />
